@@ -4,9 +4,28 @@ const express = require('express'),
   path = require('path');
 
 const app = express();
+
 // create a write stream (in append mode)
 // a ‘log.txt’ file is created in root directory
+
 const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {flags: 'a'})
+
+// create an array for movie list endpoint
+
+let topMovies = [
+  {
+    title: 'Lord of the Rings: The Return of the King',
+    director: 'Peter Jackson'
+  },
+  {
+    title: 'Apocalypto',
+    director: 'Mel Gibson'
+  },
+  {
+    title: 'Bone Tomahawk',
+    director: 'S. Craig Zahler'
+  }
+];
 
 // setup the logger
 app.use(morgan('combined', {stream: accessLogStream}));
