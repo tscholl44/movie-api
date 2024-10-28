@@ -3,6 +3,7 @@ const express = require('express'),
   fs = require('fs'), // import built in node modules fs and path 
   path = require('path');
   uuid = require('uuid');
+  bodyParser = require('body-parser');
 
 const app = express();
 
@@ -10,6 +11,10 @@ const app = express();
 // a ‘log.txt’ file is created in root directory
 
 const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {flags: 'a'})
+// use bodyParser
+
+app.use(bodyParser.json());
+
 
 // create an array for movie list endpoint and users
 let users = [
@@ -66,12 +71,9 @@ app.get('/', (req, res) => {
   res.send('Only the best movies!');
 });
 
-app.use('/documentation.html', express.static('public'));
+app.use('/static', express.static('public'));
 
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).send('Something broke!');
-});
+
 
 //Allow new users to register
 app.post('/users', (req, res) => {
@@ -186,6 +188,11 @@ app.get('/movies/directors/:directorName', (req, res) => {
   }
 
 })
+
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send('Something broke!');
+});
 
 app.listen(8080, () => {
   console.log('Your app is listening on port 8080.');
