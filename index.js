@@ -104,28 +104,28 @@ app.put('/users/:id', (req, res) => {
 })
 
 //Allow users to add a movie to their list of favorites
-app.post('/users/:id/:movieTitle', (req, res) => {
-  const { id, movieTitle } = req.params;
+app.post('/users/:id/:movieId', (req, res) => {
+  const { id, movieId } = req.params;
 
   let user = users.find( user => user.id == id );
 
   if (user) {
-    user.favoriteMovies.push(movieTitle);
-    res.status(200).send(`${movieTitle} has been added to user ${id}'s array`);
+    user.favoriteMovies.push(movieId);
+    res.status(200).send(`${movieId} has been added to user ${id}'s array`);
   } else {
     res.status(400).send('user does not exist')
   }
 })
 
 //Delete movie from a user's list
-app.delete('/users/:id/:movieTitle', (req, res) => {
-  const { id, movieTitle } = req.params;
+app.delete('/users/:id/:movieId', (req, res) => {
+  const { id, movieId } = req.params;
 
   let user = users.find( user => user.id == id );
 
   if (user) {
-    user.favoriteMovies = user.favoriteMovies.filter( title => title !== movieTitle );
-    res.status(200).send(`${movieTitle} has been removed from ${id}'s array`);
+    user.favoriteMovies = user.favoriteMovies.filter( title => title !== movieId );
+    res.status(200).send(`${movieId} has been removed from ${id}'s array`);
   } else {
     res.status(400).send('user does not exist')
   }
@@ -133,7 +133,7 @@ app.delete('/users/:id/:movieTitle', (req, res) => {
 
 //Allow a user to de-register
 app.delete('/users/:id', (req, res) => {
-  const { id, movieTitle } = req.params;
+  const { id, movieId } = req.params;
 
   let user = users.find( user => user.id == id );
 
