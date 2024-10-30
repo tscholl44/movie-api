@@ -58,29 +58,38 @@
                 <td>Create a New User</td>
                 <td>/users</td>
                 <td>POST</td>
-                <td>None</td>
-                <td>JSON object with a unique user ID</td>
+                <td>JSON object with name and favoriteMovies. Example: <br>
+                    "{
+                        "name": "mary",
+                        "favoriteMovies": []
+                    }"</td>
+                <td>Confirmation of new user added</td>
             </tr>
             <!--Update user ID -->
             <tr>
                 <td>Update a User Name</td>
                 <td>/users/:id</td>
                 <td>PUT</td>
-                <td>JSON object with updated user info</td>
+                <td>JSON object with user info. Example: <br>
+                    "{
+                        "id": 2,
+                        "name": "mary",
+                        "favoriteMovies": []
+                    }"</td>
                 <td>Confirmation of update</td>
             </tr>
             <!--Allow users to add a movie to their list of favorites-->
             <tr>
                 <td>Add a Favorite Movie</td>
-                <td>/users/:id/:movieTitle</td>
+                <td>/users/:id/:movieId</td>
                 <td>POST</td>
-                <td>JSON object with movie title</td>
+                <td>None</td>
                 <td>Updated list of favorite movies</td>
             </tr>
             <!--Delete movie from a user's list-->
             <tr>
                 <td>Remove a Movie From Favorites</td>
-                <td>/users/:id/:movieTitle</td>
+                <td>/users/:id/:movieId</td>
                 <td>DELETE</td>
                 <td>None</td>
                 <td>Confirmation of movie removal</td>
