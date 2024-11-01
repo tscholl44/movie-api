@@ -48,3 +48,7 @@
 ::1 - - [30/Oct/2024:21:04:03 +0000] "POST /users/ HTTP/1.1" 201 78 "-" "PostmanRuntime/7.42.0"
 ::1 - - [30/Oct/2024:21:04:59 +0000] "POST /users/b9fb47fe-34fb-4db5-a4da-db28ba4b800a/Apocalypto HTTP/1.1" 200 78 "-" "PostmanRuntime/7.42.0"
 ::1 - - [30/Oct/2024:21:06:40 +0000] "DELETE /users/b9fb47fe-34fb-4db5-a4da-db28ba4b800a/Apocalypto HTTP/1.1" 200 77 "-" "PostmanRuntime/7.42.0"
+::1 - - [01/Nov/2024:16:33:09 +0000] "POST /users/b9fb47fe-34fb-4db5-a4da-db28ba4b800a/2 HTTP/1.1" 400 19 "-" "PostmanRuntime/7.42.0"
+::1 - - [01/Nov/2024:16:33:37 +0000] "POST /users HTTP/1.1" 201 78 "-" "PostmanRuntime/7.42.0"
+::1 - - [01/Nov/2024:16:33:57 +0000] "POST /users/2694cc4a-e9ca-49db-885b-6d47372e9b93/2 HTTP/1.1" 200 69 "-" "PostmanRuntime/7.42.0"
+::1 - - [01/Nov/2024:16:34:44 +0000] "DELETE /users/2694cc4a-e9ca-49db-885b-6d47372e9b93/2 HTTP/1.1" 200 68 "-" "PostmanRuntime/7.42.0"

@@ -63,16 +63,11 @@ let topMovies = [
 // setup the logger
 app.use(morgan('combined', {stream: accessLogStream}));
 
-app.get('/movies', (req, res) => {
-  res.json(topMovies);
-});
-
 app.get('/', (req, res) => {
   res.send('Only the best movies!');
 });
 
 app.use('/static', express.static('public'));
-
 
 
 //Allow new users to register
