@@ -27,31 +27,76 @@
                 <td>/movies</td>
                 <td>GET</td>
                 <td>None</td>
-                <td>JSON object of movie array</td>
+                <td>JSON object of all movies Example: <br> 
+                    "{
+                        "genre": {
+                            "name": "Sci-Fi",
+                            "description": "Science fiction movies explore the fiction of science."
+                        },
+                        "director": {
+                            "name": "Wachowski Sisters",
+                            "bio": "The Wachowski Sisters, formerly known as the Wachowski brothers, are filmmakers.",
+                            "birthdate": "1965-12-29T00:00:00.000Z",
+                            "deathdate": null
+                        },
+                        "actors": [],
+                        "_id": "673660c78ca0b29fbf0d8190",
+                        "title": "The Matrix",
+                        "description": "A hacker discovers a dystopian world controlled by AI.",
+                        "dateReleased": "1999-03-31T00:00:00.000Z"
+                    }"    
+                </td>
             </tr>
-            <!--Get title of movie--->
+            <!--Get movie info by title--->
             <tr>
                 <td>Get Movies by Movie Title</td>
                 <td>/movies/:title</td>
                 <td>GET</td>
                 <td>None</td>
-                <td>JSON object of movie</td>
+                <td>JSON object of movie Example: <br>
+                    "{
+                        "genre": {
+                            "name": "Drama",
+                            "description": "Drama movies emphasize storytelling."
+                        },
+                        "director": {
+                            "name": "Robert Zemeckis",
+                            "bio": "Robert Zemeckis is an american filmmaker known for icon films such as Forrest Gump.",
+                            "birthdate": "1952-05-14T00:00:00.000Z",
+                            "deathdate": null
+                        },
+                        "actors": [],
+                        "_id": "67366a658ca0b29fbf0d8197",
+                        "title": "Forrest Gump",
+                        "description": "A slow witted but kind hearted man influences several historical events.",
+                        "dateReleased": "1994-07-06T00:00:00.000Z"
+                    }" 
+                </td>
             </tr>
-            <!--Get genre of movie-->
+            <!--Get genre info-->
             <tr>
-                <td>Get Movies by Genre</td>
-                <td>/movies/genre/:genreName</td>
+                <td>Get genre info by name</td>
+                <td>/genre/:name</td>
                 <td>GET</td>
                 <td>None</td>
-                <td>JSON object with genre name</td>
+                <td>JSON object with genre name Example: <br>
+                    "Action movies feature intense physical action."
+                </td>
             </tr>
-            <!--Get director of movie-->
+            <!--Get director info-->
             <tr>
-                <td>Get Movies by Director's Name</td>
-                <td>/movies/directors/:directorName</td>
+                <td>Get Director info</td>
+                <td>/director/:name</td>
                 <td>GET</td>
                 <td>None</td>
-                <td>JSON object about director's movies</td>
+                <td>JSON object about director Example: <br>
+                    "{
+                        "name": "David Fincher",
+                        "bio": "David Fincher is an american filmmaker known for his dark, suspenseful films.",
+                        "birthdate": "1962-08-28T00:00:00.000Z",
+                        "deathdate": null
+                    }"
+                </td>
             </tr>
             <!--Allow new users to register-->
             <tr>
@@ -60,36 +105,56 @@
                 <td>POST</td>
                 <td>JSON object with name and favoriteMovies. Example: <br>
                     "{
-                        "name": "mary",
+                        "_id": "67366d678ca0b29fbf0d819a",
+                        "userId": "1",
+                        "name": "Alice Johnson",
+                        "birthday": "1990-05-15",
                         "favoriteMovies": []
-                    }"</td>
+                    }"
+                </td>
                 <td>Confirmation of new user added</td>
             </tr>
             <!--Update user ID -->
             <tr>
                 <td>Update a User Name</td>
-                <td>/users/:id</td>
+                <td>/users/:name</td>
                 <td>PUT</td>
                 <td>JSON object with user info. Example: <br>
                     "{
-                        "id": 2,
-                        "name": "mary",
+                        "_id": "67366d678ca0b29fbf0d819a",
+                        "userId": "1",
+                        "name": "Alice Johnson",
+                        "birthday": "1990-05-15T00:00:00.000Z",
                         "favoriteMovies": []
-                    }"</td>
+                    }"
+                </td>
                 <td>Confirmation of update</td>
             </tr>
             <!--Allow users to add a movie to their list of favorites-->
             <tr>
                 <td>Add a Favorite Movie</td>
-                <td>/users/:id/:movieId</td>
+                <td>/users/:name/favoriteMovies/:_id</td>
                 <td>POST</td>
                 <td>None</td>
-                <td>Updated list of favorite movies</td>
+                <td>Updated user JSON object list of favorite movies Example: <br>
+                    "{
+                        "_id": "67366d678ca0b29fbf0d819a",
+                        "userId": "1",
+                        "name": "Alice Johnson",
+                        "birthday": "1990-05-15",
+                        "favoriteMovies": [
+                            "673660c78ca0b29fbf0d8190",
+                            "673662448ca0b29fbf0d8191",
+                            "673666bd8ca0b29fbf0d8195",
+                            "6736649c8ca0b29fbf0d8193"
+                        ]
+                    }"
+                </td>
             </tr>
             <!--Delete movie from a user's list-->
             <tr>
                 <td>Remove a Movie From Favorites</td>
-                <td>/users/:id/:movieId</td>
+                <td>/users/:name/favoriteMovies/:_id</td>
                 <td>DELETE</td>
                 <td>None</td>
                 <td>Confirmation of movie removal</td>
@@ -97,7 +162,7 @@
             <!--Allow a user to de-register-->
             <tr>
                 <td>Delete a User</td>
-                <td>/users/:id</td>
+                <td>/users/:name</td>
                 <td>DELETE</td>
                 <td>None</td>
                 <td>Confirmation of user removal</td>
