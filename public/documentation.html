@@ -28,7 +28,7 @@
                 <td>GET</td>
                 <td>None</td>
                 <td>JSON object of all movies Example: <br> 
-                    "{
+                    "[{
                         "genre": {
                             "name": "Sci-Fi",
                             "description": "Science fiction movies explore the fiction of science."
@@ -44,7 +44,7 @@
                         "title": "The Matrix",
                         "description": "A hacker discovers a dystopian world controlled by AI.",
                         "dateReleased": "1999-03-31T00:00:00.000Z"
-                    }"    
+                    }...]"    
                 </td>
             </tr>
             <!--Get movie info by title--->
@@ -79,7 +79,7 @@
                 <td>/genre/:name</td>
                 <td>GET</td>
                 <td>None</td>
-                <td>JSON object with genre name Example: <br>
+                <td>JSON object about genre. Example: <br>
                     "Action movies feature intense physical action."
                 </td>
             </tr>
@@ -103,32 +103,61 @@
                 <td>Create a New User</td>
                 <td>/users</td>
                 <td>POST</td>
-                <td>JSON object with name and favoriteMovies. Example: <br>
+                <td>JSON object with chosen user data. Example: <br>
                     "{
-                        "_id": "67366d678ca0b29fbf0d819a",
-                        "userId": "1",
                         "name": "Alice Johnson",
+                        "password": "securepassword1",
+                        "email": "alice@example.com"
                         "birthday": "1990-05-15",
                         "favoriteMovies": []
                     }"
                 </td>
-                <td>Confirmation of new user added</td>
+                <td>JSON object of new user with ID added. Example: <br>
+                    "{
+                        "name": "Alice Johnson",
+                        "password": "securepassword1",
+                        "email": "alice@example.com",
+                        "birthday": "1990-05-15",
+                        "favoriteMovies": [],
+                        "_id": "67366d678ca0b29fbf0d819a",
+                        "__v": 0
+                    }"
+                </td>
             </tr>
-            <!--Update user ID -->
+            <!--Update user -->
             <tr>
                 <td>Update a User Name</td>
                 <td>/users/:name</td>
                 <td>PUT</td>
-                <td>JSON object with user info. Example: <br>
+                <td>JSON object with desired user name. Example: <br>
                     "{
-                        "_id": "67366d678ca0b29fbf0d819a",
-                        "userId": "1",
                         "name": "Alice Johnson",
-                        "birthday": "1990-05-15T00:00:00.000Z",
-                        "favoriteMovies": []
+                        "password": "securepassword1",
+                        "email": "alice@example.com",
+                        "birthday": "1990-05-15",
+                        "favoriteMovies": [
+                            "673660c78ca0b29fbf0d8190",
+                            "673662448ca0b29fbf0d8191",
+                            "673666bd8ca0b29fbf0d8195",
+                            "6736649c8ca0b29fbf0d8193"
+                        ]
                     }"
                 </td>
-                <td>Confirmation of update</td>
+                <td>JSON of updated user object. Example: <br>
+                    "{
+                        "_id": "67366d678ca0b29fbf0d819a",
+                        "name": "Alice Johnson",
+                        "password": "securepassword1",
+                        "email": "alice@example.com",
+                        "birthday": "1990-05-15",
+                        "favoriteMovies": [
+                            "673660c78ca0b29fbf0d8190",
+                            "673662448ca0b29fbf0d8191",
+                            "673666bd8ca0b29fbf0d8195",
+                            "6736649c8ca0b29fbf0d8193"
+                        ]
+                    }"
+                </td>
             </tr>
             <!--Allow users to add a movie to their list of favorites-->
             <tr>
@@ -139,7 +168,6 @@
                 <td>Updated user JSON object list of favorite movies Example: <br>
                     "{
                         "_id": "67366d678ca0b29fbf0d819a",
-                        "userId": "1",
                         "name": "Alice Johnson",
                         "birthday": "1990-05-15",
                         "favoriteMovies": [
@@ -157,7 +185,16 @@
                 <td>/users/:name/favoriteMovies/:_id</td>
                 <td>DELETE</td>
                 <td>None</td>
-                <td>Confirmation of movie removal</td>
+                <td>JSON object of user objcet with updated favoritMovies. Example <br>
+                    "{
+                        "_id": "67366d678ca0b29fbf0d819a",
+                        "name": "Alice Johnson",
+                        "password": "securepassword1",
+                        "email": "alice@example.com",
+                        "birthday": "1990-05-15",
+                        "favoriteMovies": ["673660c78ca0b29fbf0d8190"]
+                    }"
+                </td>
             </tr>
             <!--Allow a user to de-register-->
             <tr>
