@@ -11,7 +11,7 @@ passport.use(
   new LocalStrategy(
     {
       usernameField: 'name',
-      passwordField: 'Password',
+      passwordField: 'password',
     },
     async (name, password, callback) => {
       console.log(`${name} ${password}`);

@@ -152,3 +152,4 @@
 ::1 - - [17/Dec/2024:20:31:12 +0000] "GET /users HTTP/1.1" 401 - "-" "PostmanRuntime/7.43.0"
 ::1 - - [17/Dec/2024:20:41:51 +0000] "POST /users?name=bobman&password=spaghetti HTTP/1.1" 201 165 "-" "PostmanRuntime/7.43.0"
 ::1 - - [17/Dec/2024:21:04:20 +0000] "POST /users HTTP/1.1" 201 163 "-" "PostmanRuntime/7.43.0"
+::1 - - [17/Dec/2024:21:16:51 +0000] "GET /movies HTTP/1.1" 201 5050 "-" "PostmanRuntime/7.43.0"
