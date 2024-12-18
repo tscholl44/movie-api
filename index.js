@@ -184,7 +184,7 @@ app.get('/genre/:name', passport.authenticate('jwt', {session: false}), (req, re
     })
     .catch((err) => {
       console.error(err);
-      res.status(500).send("Error " + err);
+      res.status(500).send("Error: Genre does not exist " + err);
     });
 
 });
