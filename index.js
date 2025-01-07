@@ -8,29 +8,36 @@ mongoose.connect('mongodb://localhost:27017/tomsFlixDB', { useNewUrlParser: true
 
 const express = require('express'),
   morgan = require('morgan'),
-  fs = require('fs'), // import built in node modules fs and path 
+  fs = require('fs'), // Import built in node modules fs and path 
   path = require('path');
   uuid = require('uuid');
   bodyParser = require('body-parser');
 
 const app = express();
 
-// create a write stream (in append mode)
-// a ‘log.txt’ file is created in root directory
+// Create a write stream (in append mode)
+// A ‘log.txt’ file is created in root directory
 
 const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {flags: 'a'})
 
-// use bodyParser
+// Use bodyParser
 app.use(bodyParser.json());
 
-// import auth.js file
+// Import cors
+const cors = require('cors');
+app.use(cors());
+
+// Import Express Validator
+const { check, validationResult } = require('express-validator');
+
+// Import auth.js file
 let auth = require('./auth')(app);
 
-// require passport module and import passport.js file
+// Require passport module and import passport.js file
 const passport = require('passport');
 require('./passport');
 
-// setup the logger
+// Setup the logger
 app.use(morgan('combined', {stream: accessLogStream}));
 
 app.get('/', (req, res) => {
@@ -51,35 +58,49 @@ app.get('/users', passport.authenticate('jwt', {session: false}), async (req, re
     });
 });
 
-//Allow new users to register
-app.post('/users', async (req, res) => {
-  await Users.findOne({ name: req.body.name })
-    .then((user) => {
-      if (user) {
-        return res.status(400).send(req.body.name + 'already exists');
-      } else {
-        Users
-          .create({
-            name: req.body.name,
-            password: req.body.password,
-            email: req.body.email,
-            birthday: req.body.birthday,
-            favoriteMovies: req.body.favoriteMovies
-          })
-          .then((user) =>{res.status(201).json(user) })
-        .catch((error) => {
-          console.error(error);
-          res.status(500).send('Error: ' + error);
-        })
-      }
-    })
-    .catch((error) => {
-      console.error(error);
-      res.status(500).send('Error: ' + error);
-    });
-});
+// Allow new users to register
+app.post('/users',
+  [ 
+    check('name', 'Username is required').isLength({min: 5}),
+    check('name', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
+    check('password', 'Password is required').not().isEmpty(),
+    check('email', 'Email does not appear to be valid').isEmail()
+  ], async (req, res) => {
+// Check the validation object for errors
+    let errors = validationResult(req);
 
-//Update user by name 
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
+    }
+
+    let hashedPassword = Users.hashPassword(req.body.password);
+    await Users.findOne({ name: req.body.name })
+      .then((user) => {
+        if (user) {
+          return res.status(400).send(req.body.name + 'already exists');
+        } else {
+          Users
+            .create({
+              name: req.body.name,
+              password: req.body.password,
+              email: req.body.email,
+              birthday: req.body.birthday,
+              favoriteMovies: req.body.favoriteMovies
+            })
+            .then((user) =>{res.status(201).json(user) })
+            .catch((error) => {
+              console.error(error);
+              res.status(500).send('Error: ' + error);
+            })
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        res.status(500).send('Error: ' + error);
+      });
+  });
+
+// Update user by name 
 app.put('/users/:name', passport.authenticate('jwt', {session: false}), async (req, res) => {
     // CONDITION TO CHECK ADDED HERE
     if(req.user.name !== req.params.name){
@@ -106,7 +127,7 @@ app.put('/users/:name', passport.authenticate('jwt', {session: false}), async (r
 
 });
 
-//Allow users to add a movie to their list of favorites
+// Allow users to add a movie to their list of favorites
 app.post('/users/:name/favoriteMovies/:_id', passport.authenticate('jwt', {session: false}), async (req, res) => {
   await Users.findOneAndUpdate({ name: req.params.name }, {
      $push: { favoriteMovies: req.params._id }
@@ -121,7 +142,7 @@ app.post('/users/:name/favoriteMovies/:_id', passport.authenticate('jwt', {sessi
   });
 });
 
-//Delete movie from a user's list
+// Delete movie from a user's list
 app.delete('/users/:name/favoriteMovies/:_id', passport.authenticate('jwt', {session: false}), async (req, res) => {
   await Users.findOneAndUpdate({ name: req.params.name }, {
      $pull: { favoriteMovies: req.params._id }
@@ -152,7 +173,7 @@ app.delete('/users/:name', passport.authenticate('jwt', {session: false}), async
     });
 });
 
-//Get all movies
+// Get all movies
 app.get('/movies', passport.authenticate('jwt', {session: false}), async (req, res) => {
   Movies.find()
     .then((movies) => {
@@ -164,7 +185,7 @@ app.get('/movies', passport.authenticate('jwt', {session: false}), async (req, r
     });
 });
 
-//Get title of movie
+// Get title of movie
 app.get('/movies/:title', passport.authenticate('jwt', {session: false}), async (req, res) => {
   Movies.findOne({ title: req.params.title })
     .then ((movie) => {
@@ -176,7 +197,7 @@ app.get('/movies/:title', passport.authenticate('jwt', {session: false}), async 
     });
 });
 
-//Get genre 
+// Get genre 
 app.get('/genre/:name', passport.authenticate('jwt', {session: false}), (req, res) => {
   Movies.findOne({ "genre.name": req.params.name })
     .then((movie) => {
@@ -189,7 +210,7 @@ app.get('/genre/:name', passport.authenticate('jwt', {session: false}), (req, re
 
 });
 
-//Get director of movie
+// Get director of movie
 app.get('/director/:name', passport.authenticate('jwt', {session: false}), (req, res) => {
   Movies.findOne({ "director.name": req.params.name })
     .then((movie) => {
@@ -207,6 +228,7 @@ app.use((err, req, res, next) => {
   res.status(500).send('Something broke!');
 });
 
-app.listen(8080, () => {
-  console.log('Your app is listening on port 8080.');
+const port = process.env.PORT || 8080;
+app.listen(port, '0.0.0.0',() => {
+ console.log('Listening on Port ' + port);
 });
