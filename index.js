@@ -75,7 +75,7 @@ app.post('/users',
       return res.status(422).json({ errors: errors.array() });
     }
 
-    let hashedPassword = Users.hashPassword(req.body.password);
+    let hashedPassword = User.hashPassword(req.body.password);
     await Users.findOne({ name: req.body.name })
       .then((user) => {
         if (user) {
@@ -84,7 +84,7 @@ app.post('/users',
           Users
             .create({
               name: req.body.name,
-              password: req.body.password,
+              password: hashedPassword,
               email: req.body.email,
               birthday: req.body.birthday,
               favoriteMovies: req.body.favoriteMovies
@@ -112,7 +112,7 @@ app.put('/users/:name', passport.authenticate('jwt', {session: false}), async (r
   await Users.findOneAndUpdate({ name: req.params.name }, { $set:
     {
       name: req.body.name,
-      password: req.body.password,
+      password: hashedPassword,
       email: req.body.email,
       birthday: req.body.birthday,
       favoriteMovies: req.body.favoriteMovies
