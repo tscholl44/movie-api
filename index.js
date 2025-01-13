@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Models = require('./models.js');
 
 const Movies = Models.Movie;
-const User = Models.User;
+const Users = Models.User;
 
 //mongoose.connect('mongodb://localhost:27017/tomsFlixDB', { useNewUrlParser: true, useUnifiedTopology: true });
 mongoose.connect( process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
@@ -75,7 +75,7 @@ app.post('/users',
       return res.status(422).json({ errors: errors.array() });
     }
 
-    let hashedPassword = User.hashPassword(req.body.password);
+    let hashedPassword = Users.hashPassword(req.body.password);
     await Users.findOne({ name: req.body.name })
       .then((user) => {
         if (user) {
