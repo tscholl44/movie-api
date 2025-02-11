@@ -177,7 +177,7 @@ app.delete('/users/:name', passport.authenticate('jwt', {session: false}), async
 });
 
 // Get all movies
-app.get('/movies', passport.authenticate('jwt', {session: false}), async (req, res) => {
+app.get('/movies', async (req, res) => {
   Movies.find()
     .then((movies) => {
       res.status(201).json(movies);
@@ -189,7 +189,7 @@ app.get('/movies', passport.authenticate('jwt', {session: false}), async (req, r
 });
 
 // Get title of movie
-app.get('/movies/:title', passport.authenticate('jwt', {session: false}), async (req, res) => {
+app.get('/movies/:title', async (req, res) => {
   Movies.findOne({ title: req.params.title })
     .then ((movie) => {
       res.json(movie);
