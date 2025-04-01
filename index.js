@@ -60,6 +60,21 @@ app.get('/users', passport.authenticate('jwt', {session: false}), async (req, re
     });
 });
 
+// Get user by name
+app.get('/users/:name', passport.authenticate('jwt', { session: false }), async (req, res) => {
+  await Users.findOne({ name: req.params.name })
+    .then((user) => {
+      if (!user) {
+        return res.status(404).send('User not found');
+      }
+      res.status(200).json(user);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    });
+});
+
 // Allow new users to register
 app.post('/users',
   [ 
